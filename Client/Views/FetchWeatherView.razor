@@ -1,0 +1,31 @@
+@page "/fetchdatamvvm";
+@using Blazor.MVVM.Shared.Models
+@using Blazor.MVVM.Shared.ViewModels
+@using Blazor.MVVM.Client.Components
+@inject IFetchDataViewModel fetchDataViewModel
+
+<h1>Weather forecast</h1>
+<button class="btn btn-primary"
+    onclick=@ToggleScaleCommand>Display in @fetchDataViewModel.DisplayOtherTemperatureScaleLong</button>
+<button class="btn btn-primary"
+    onclick=@ToggleMembershipCommand>@fetchDataViewModel.DisplayPremiumToggleMessage</button>
+
+
+@if (fetchDataViewModel.BasicForecastViewModel.WeatherForecasts == null)
+{
+   <p><em>Loading...</em></p>
+}
+else
+{
+    <BasicForecast ViewModel="@fetchDataViewModel.BasicForecastViewModel" />
+}
+
+@functions {
+    protected override async Task OnInitializedAsync()
+    {
+        await fetchDataViewModel.RetrieveForecastsAsync();
+    }
+
+    protected Action ToggleScaleCommand { get => new Action(()=> { fetchDataViewModel.ToggleTemperatureScale(); }); }
+    protected Action ToggleMembershipCommand { get => new Action(()=>{ fetchDataViewModel.ToggleMembership(); }); }
+}

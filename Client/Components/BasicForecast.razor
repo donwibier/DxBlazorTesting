@@ -1,0 +1,29 @@
+@using Blazor.MVVM.Shared.Models
+@using Blazor.MVVM.Shared.ViewModels
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Temp. (@ViewModel.DisplayTemperatureScaleShort)</th>                
+                <th>Summary</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in ViewModel.WeatherForecasts)
+            {
+                <tr>
+                    <td>@forecast.Date.ToShortDateString()</td>
+                    <td>@ViewModel.DisplayTemperature(forecast.TemperatureC)</td>                    
+                    <td>@forecast.Summary</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+@functions {
+    [Parameter]
+    public IBasicFetchWeatherViewModel ViewModel { get; set;}
+
+}
